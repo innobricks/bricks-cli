@@ -1,11 +1,11 @@
 {
-  "name": "ember-cli",
+  "name": "bricks-cli",
   "version": "0.0.39",
   "main": "lib/cli/index.js",
   "description": "Command line tool for developing ambitious ember.js apps",
   "trackingCode": "UA-49225444-1",
   "bin": {
-    "ember": "./bin/ember"
+    "bricks": "./bin/bricks"
   },
   "scripts": {
     "test": "mocha --timeout 8000 --reporter spec tests/**/*-test.js tests/**/*/*-test.js tests/**/*/*/*-test.js",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/stefanpenner/ember-cli.git"
+    "url": "https://github.com/innobricks/bricks-cli"
   },
   "engines": {
     "node": ">= 0.10.0"
@@ -31,7 +31,7 @@
   "author": "Ember core team and ember cli contributors",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/stefanpenner/ember-cli/issues"
+    "url": "https://github.com/innobricks/bricks-cli/issues"
   },
   "bundledDependencies": [
     "bower",
