@@ -466,6 +466,7 @@ describe('Acceptance: ember generate', function() {
       });
       assertFile('server/routes/foo.js', {
         contains: "module.exports = function(app) {\n" +
+                  "  var express = require('express');\n" +
                   "  var fooRouter = express.Router();\n" +
                   "  fooRouter.get('/', function(req, res) {\n" +
                   "    res.send({foo:[]});\n" +
@@ -513,6 +514,34 @@ describe('Acceptance: ember generate', function() {
       .then(function() {
         assertFile('app/controllers/foo.js', {
           contains: 'custom: true'
+        });
+      });
+  });
+
+  it('passes custom cli arguments to blueprint options', function() {
+    return initApp()
+      .then(function() {
+        outputFile(
+          'blueprints/customblue/files/app/__name__.js',
+          "Q: Can I has custom command? A: <%= hasCustomCommand %>"
+        );
+        return outputFile(
+          'blueprints/customblue/index.js',
+          "module.exports = {\n" +
+          "  locals: function(options) {\n" +
+          "    var loc = {};\n" +
+          "    loc.hasCustomCommand = (options.customCommand) ? 'Yes!' : 'No. :C';\n" +
+          "    return loc;\n" +
+          "  },\n" +
+          "};\n"
+        );
+      })
+      .then(function() {
+        return ember(['generate', 'customblue', 'foo', '--custom-command']);
+      })
+      .then(function() {
+        assertFile('app/foo.js', {
+          contains: 'A: Yes!'
         });
       });
   });
