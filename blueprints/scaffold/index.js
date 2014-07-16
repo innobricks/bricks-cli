@@ -1,9 +1,9 @@
-var Blueprint   = require('ember-cli/lib/models/blueprint');
-var inflection  = require('inflection');
+var Blueprint = require('ember-cli/lib/models/blueprint');
+var inflection = require('inflection');
 var stringUtils = require('ember-cli/lib/utilities/string');
 
 module.exports = Blueprint.extend({
-  locals: function(options) {
+  locals: function (options) {
     var attrs = [];
     var needs = [];
     var entityOptions = options.entity.options;
@@ -31,6 +31,7 @@ module.exports = Blueprint.extend({
     needs = '  needs: [' + needs.join(', ') + ']';
 
     return {
+      baseClass: "ArrayController",
       attrs: attrs,
       needs: needs
     };
@@ -39,21 +40,21 @@ module.exports = Blueprint.extend({
 
 function dsAttr(name, type) {
   switch (type) {
-  case 'array':
-  case 'boolean':
-  case 'date':
-  case 'number':
-  case 'object':
-  case 'string':
-    return 'DS.attr(\'' + type + '\')';
-  case 'belongs-to':
-    return 'DS.belongsTo(\'' + name + '\')';
-  case 'has-many':
-    var singularizedName = inflection.singularize(name);
-    return 'DS.hasMany(\'' + singularizedName + '\')';
-  default:
-    //"If you don't specify the type of the attribute, it will be whatever was provided by the server"
-    //http://emberjs.com/guides/models/defining-models/
-    return 'DS.attr()';
+    case 'array':
+    case 'boolean':
+    case 'date':
+    case 'number':
+    case 'object':
+    case 'string':
+      return 'DS.attr(\'' + type + '\')';
+    case 'belongs-to':
+      return 'DS.belongsTo(\'' + name + '\')';
+    case 'has-many':
+      var singularizedName = inflection.singularize(name);
+      return 'DS.hasMany(\'' + singularizedName + '\')';
+    default:
+      //"If you don't specify the type of the attribute, it will be whatever was provided by the server"
+      //http://emberjs.com/guides/models/defining-models/
+      return 'DS.attr()';
   }
 }
