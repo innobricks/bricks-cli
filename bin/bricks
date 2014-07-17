@@ -6,7 +6,7 @@ process.title = 'ember';
 
 var resolve = require('resolve');
 
-resolve('ember-cli', {
+resolve('bricks-cli', {
   basedir: process.cwd()
 }, function(error, projectLocalCli) {
   var cli;
