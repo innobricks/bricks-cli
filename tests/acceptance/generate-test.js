@@ -578,4 +578,75 @@ describe('Acceptance: ember generate', function() {
         });
       });
   });
+
+
+  it('scaffold foo', function() {
+    return generate(['scaffold', 'foo']).then(function() {
+      assertFile('app/router.js', {
+        contains: "this.resource('foo', { path: 'foos/:foo_id' });"
+      });
+      assertFile('app/models/foo.js', {
+        contains: 'export default DS.Model.extend'
+      });
+      assertFile('app/routes/foo.js', {
+        contains: 'export default Ember.Route.extend({\n});'
+      });
+      assertFile('app/templates/foo.hbs');
+
+      assertFile('app/views/foo.js');
+
+      assertFile('app/controllers/foo.js');
+
+      assertFile('tests/unit/models/foo-test.js', {
+        contains: "moduleForModel('foo', 'Foo'"
+      });
+      assertFile('tests/unit/routes/foo-test.js', {
+        contains: "moduleFor('route:foo', 'FooRoute'"
+      });
+
+      assertFile('tests/unit/controllers/foo-test.js', {
+        contains: "moduleFor('controller:foo', 'FooController'"
+      });
+
+      assertFile('tests/unit/views/foo-test.js', {
+        contains: "moduleFor('view:foo', 'FooView'"
+      });
+
+    });
+  });
+
+  it('scaffold foos', function() {
+    return generate(['scaffold', 'foos']).then(function() {
+      assertFile('app/router.js', {
+        contains: "this.resource('foos');"
+      });
+      assertFile('app/models/foo.js', {
+        contains: 'export default DS.Model.extend'
+      });
+      assertFile('app/routes/foos.js', {
+        contains: 'export default Ember.Route.extend({\n});'
+      });
+      assertFile('app/templates/foos.hbs');
+
+
+      assertFile('app/views/foos.js');
+
+      assertFile('app/controllers/foos.js');
+
+      assertFile('tests/unit/models/foo-test.js', {
+        contains: "moduleForModel('foo', 'Foo'"
+      });
+      assertFile('tests/unit/routes/foos-test.js', {
+        contains: "moduleFor('route:foos', 'FoosRoute'"
+      });
+
+      assertFile('tests/unit/controllers/foos-test.js', {
+        contains: "moduleFor('controller:foos', 'FoosController'"
+      });
+      assertFile('tests/unit/views/foos-test.js', {
+        contains: "moduleFor('view:foos', 'FoosView'"
+      });
+    });
+  });
+
 });

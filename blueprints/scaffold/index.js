@@ -1,60 +1,46 @@
-var Blueprint = require('ember-cli/lib/models/blueprint');
+var Blueprint  = require('../../lib/models/blueprint');
+var Promise    = require('../../lib/ext/promise');
+var merge      = require('lodash-node/compat/objects/merge');
 var inflection = require('inflection');
-var stringUtils = require('ember-cli/lib/utilities/string');
 
 module.exports = Blueprint.extend({
-  locals: function (options) {
-    var attrs = [];
-    var needs = [];
-    var entityOptions = options.entity.options;
-
-    for (var name in entityOptions) {
-      var type = entityOptions[name] || '';
-      var dasherizedName = stringUtils.dasherize(name);
-      var dasherizedNameSingular = inflection.singularize(dasherizedName);
-      var camelizedName = stringUtils.camelize(name);
-      var dasherizedType = stringUtils.dasherize(type);
-
-      if (/has-many/.test(dasherizedType)) {
-        var camelizedNamePlural = inflection.pluralize(camelizedName);
-        attrs.push(camelizedNamePlural + ': ' + dsAttr(camelizedName, dasherizedType));
-      } else {
-        attrs.push(camelizedName + ': ' + dsAttr(camelizedName, dasherizedType));
+  install: function(options) {
+    var modelOptions = merge({}, options, {
+      entity: {
+        name: inflection.singularize(options.entity.name)
       }
-
-      if (/has-many|belongs-to/.test(dasherizedType)) {
-        needs.push("'model:" + dasherizedNameSingular + "'");
+    });
+    var routeOptions = merge({}, options, {
+      entity: {
+        options: {
+          type: 'resource'
+        }
       }
-    }
+    });
 
-    attrs = attrs.join(',\n  ');
-    needs = '  needs: [' + needs.join(', ') + ']';
+    var controllerOptions = merge({}, options, {
+      entity: {
+        options: {
+          type: 'array'
+        }
+      }
+    });
 
-    return {
-      baseClass: "ArrayController",
-      attrs: attrs,
-      needs: needs
-    };
+    return Promise.all([
+      this._installBlueprint('model', modelOptions),
+      this._installBlueprint('route', routeOptions),
+      this._installBlueprint('controller', controllerOptions),
+      this._installBlueprint('view', options),
+    ]);
+  },
+
+  _installBlueprint: function(name, options) {
+    var blueprint = Blueprint.lookup(name, {
+      ui: this.ui,
+      analytics: this.analytics,
+      project: this.project
+    });
+
+    return blueprint.install(options);
   }
 });
-
-function dsAttr(name, type) {
-  switch (type) {
-    case 'array':
-    case 'boolean':
-    case 'date':
-    case 'number':
-    case 'object':
-    case 'string':
-      return 'DS.attr(\'' + type + '\')';
-    case 'belongs-to':
-      return 'DS.belongsTo(\'' + name + '\')';
-    case 'has-many':
-      var singularizedName = inflection.singularize(name);
-      return 'DS.hasMany(\'' + singularizedName + '\')';
-    default:
-      //"If you don't specify the type of the attribute, it will be whatever was provided by the server"
-      //http://emberjs.com/guides/models/defining-models/
-      return 'DS.attr()';
-  }
-}
