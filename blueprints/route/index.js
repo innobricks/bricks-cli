@@ -20,13 +20,15 @@ function addRouteToRouter(name, options) {
   var type       = options.type || 'route';
   var routerPath = path.join(process.cwd(), 'app', 'router.js');
   var oldContent = fs.readFileSync(routerPath, 'utf-8');
-  var existence  = new RegExp("(route|resource)\\(['\"]" + name + "'");
+  var existence  = new RegExp("(?:route|resource)\\s*\\(\\s*(['\"])" + name + "\\1");
   var newContent;
   var plural;
 
   if (existence.test(oldContent)) {
     return;
   }
+
+  if (name === 'basic') { return; }
 
   switch (type) {
   case 'route':
