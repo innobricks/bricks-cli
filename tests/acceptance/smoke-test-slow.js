@@ -123,7 +123,6 @@ describe('Acceptance: smoke-test', function() {
           var md5 = crypto.createHash('md5');
           md5.update(file);
           var hex = md5.digest('hex');
-
           assert(filepath.indexOf(hex) > -1, filepath + ' contains the fingerprint (' + hex + ')');
         });
 
@@ -168,8 +167,7 @@ describe('Acceptance: smoke-test', function() {
       .then(function() {
         var dirPath = path.join('.', 'dist');
         var paths = walkSync(dirPath);
-
-        assert(paths.length < 20, 'expected fewer than 20 files in dist, found ' + paths.length);
+        assert(paths.length < 22, 'expected fewer than 20 files in dist, found ' + paths.length);
       });
   });
 

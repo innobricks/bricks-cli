@@ -5,7 +5,7 @@
   "description": "Command line tool for developing ambitious ember.js apps",
   "trackingCode": "UA-49225444-1",
   "bin": {
-    "bricks": "./bin/bricks"
+    "bricks": "./bin/ember"
   },
   "scripts": {
     "test": "mocha --timeout 8000 --reporter spec tests/**/*-test.js tests/**/*/*-test.js tests/**/*/*/*-test.js",
