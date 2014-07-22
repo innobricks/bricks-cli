@@ -101,7 +101,7 @@ describe('Blueprint', function() {
         source: 'fixtures',
         blueprints: expectedFixtures
       }, {
-        source: 'ember-cli',
+        source: 'bricks-cli',
         blueprints: expectedDefaults
       }]);
     });

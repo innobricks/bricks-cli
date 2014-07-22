@@ -8,7 +8,7 @@ var runCommand = require('../helpers/run-command');
 
 var root       = process.cwd();
 var tmproot    = path.join(root, 'tmp');
-var ember      = path.join(root, 'bin', 'ember');
+var ember      = path.join(root, 'bin', 'bricks');
 var tmpdir;
 
 describe('Acceptance: ember help', function() {
